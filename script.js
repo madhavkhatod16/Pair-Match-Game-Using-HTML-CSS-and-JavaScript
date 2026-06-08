@@ -10,22 +10,31 @@ var firstEmoji = "";
 var moves = 0;
 var pairs = 0;
 
-for(var i=0; i<imgs.length; i++){
+createGame();
 
-    document.getElementById("board").innerHTML +=
-    "<div class='card' id='c"+i+"'>?</div>";
+function createGame(){
 
+    document.getElementById("board").innerHTML = "";
+
+    for(var i=0;i<imgs.length;i++){
+
+        document.getElementById("board").innerHTML +=
+        "<div class='card' id='c"+i+"'>?</div>";
+
+    }
+
+    for(var i=0;i<imgs.length;i++){
+
+        document.getElementById("c"+i)
+        .addEventListener("click", openCard);
+
+    }
 }
 
-for(var i=0; i<imgs.length; i++){
-
-    document.getElementById("c"+i).addEventListener("click", showCard);
-
-}
-
-function showCard(e){
+function openCard(e){
 
     var id = e.target.id;
+
     var num = id.replace("c","");
 
     if(document.getElementById(id).innerHTML != "?"){
@@ -43,17 +52,23 @@ function showCard(e){
     else{
 
         moves++;
+
         document.getElementById("mv").innerHTML = moves;
 
-        if(firstEmoji == imgs[num] && firstCard != id){
+        if(firstEmoji == imgs[num]){
 
             pairs++;
+
             document.getElementById("pr").innerHTML = pairs;
-            document.getElementById("msg").innerHTML = "Nice Match!";
+
+            document.getElementById("msg").innerHTML =
+            "Nice Match!";
 
             if(pairs == 8){
 
-                document.getElementById("win").style.display = "block";
+                document.getElementById("win").style.display =
+                "block";
+
                 document.getElementById("win").innerHTML =
                 "You Won in " + moves + " Moves!";
             }
@@ -65,17 +80,34 @@ function showCard(e){
             "Not Match!";
 
             document.getElementById(firstCard).innerHTML = "?";
+
             document.getElementById(id).innerHTML = "?";
         }
 
         firstCard = "";
         firstEmoji = "";
     }
-
 }
 
-document.getElementById("rbtn").addEventListener("click", function(){
+document.getElementById("rbtn")
+.addEventListener("click", restartGame);
 
-    location.reload();
+function restartGame(){
 
-});
+    firstCard = "";
+    firstEmoji = "";
+
+    moves = 0;
+    pairs = 0;
+
+    document.getElementById("mv").innerHTML = "0";
+    document.getElementById("pr").innerHTML = "0";
+
+    document.getElementById("msg").innerHTML =
+    "Click two cards";
+
+    document.getElementById("win").style.display =
+    "none";
+
+    createGame();
+}
