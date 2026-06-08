@@ -5,63 +5,77 @@ var imgs = [
 '🦄','🐬','🦋','🐼'
 ];
 
-var first = "";
+var firstCard = "";
 var firstEmoji = "";
 var moves = 0;
 var pairs = 0;
 
-for(var i=0;i<imgs.length;i++){
+for(var i=0; i<imgs.length; i++){
 
     document.getElementById("board").innerHTML +=
-    "<button id='c"+i+"'>?</button>";
+    "<div class='card' id='c"+i+"'>?</div>";
 
 }
 
-for(var i=0;i<imgs.length;i++){
+for(var i=0; i<imgs.length; i++){
 
-    document.getElementById("c"+i)
-    .addEventListener("click", cardClick);
+    document.getElementById("c"+i).addEventListener("click", showCard);
 
 }
 
-function cardClick(){
+function showCard(e){
 
-    var id = event.target.id;
+    var id = e.target.id;
     var num = id.replace("c","");
 
-    document.getElementById(id).innerHTML =
-    imgs[num];
+    if(document.getElementById(id).innerHTML != "?"){
+        return;
+    }
 
-    if(first == ""){
+    document.getElementById(id).innerHTML = imgs[num];
 
-        first = id;
+    if(firstCard == ""){
+
+        firstCard = id;
         firstEmoji = imgs[num];
 
     }
     else{
 
         moves++;
-        document.getElementById("mv").innerHTML =
-        moves;
+        document.getElementById("mv").innerHTML = moves;
 
-        if(firstEmoji == imgs[num]){
+        if(firstEmoji == imgs[num] && firstCard != id){
 
             pairs++;
-            document.getElementById("pr").innerHTML =
-            pairs;
+            document.getElementById("pr").innerHTML = pairs;
+            document.getElementById("msg").innerHTML = "Nice Match!";
 
-            document.getElementById("msg").innerHTML =
-            "Nice Match!";
+            if(pairs == 8){
+
+                document.getElementById("win").style.display = "block";
+                document.getElementById("win").innerHTML =
+                "You Won in " + moves + " Moves!";
+            }
 
         }
         else{
 
             document.getElementById("msg").innerHTML =
             "Not Match!";
+
+            document.getElementById(firstCard).innerHTML = "?";
+            document.getElementById(id).innerHTML = "?";
         }
 
-        first = "";
+        firstCard = "";
         firstEmoji = "";
     }
 
 }
+
+document.getElementById("rbtn").addEventListener("click", function(){
+
+    location.reload();
+
+});
