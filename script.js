@@ -5,50 +5,63 @@ var imgs = [
 '🦄','🐬','🦋','🐼'
 ];
 
-var selected = [];
+var first = "";
+var firstEmoji = "";
 var moves = 0;
 var pairs = 0;
 
-imgs.forEach(function(img){
+for(var i=0;i<imgs.length;i++){
 
     document.getElementById("board").innerHTML +=
-    "<div class='card'>" + img + "</div>";
+    "<button id='c"+i+"'>?</button>";
 
-});
+}
 
-var cards = document.querySelectorAll(".card");
+for(var i=0;i<imgs.length;i++){
 
-cards.forEach(function(card){
+    document.getElementById("c"+i)
+    .addEventListener("click", cardClick);
 
-    card.addEventListener("click", function(){
+}
 
-        selected.push(card.innerHTML);
+function cardClick(){
+
+    var id = event.target.id;
+    var num = id.replace("c","");
+
+    document.getElementById(id).innerHTML =
+    imgs[num];
+
+    if(first == ""){
+
+        first = id;
+        firstEmoji = imgs[num];
+
+    }
+    else{
 
         moves++;
-        document.getElementById("mv").innerHTML = moves;
+        document.getElementById("mv").innerHTML =
+        moves;
 
-        if(selected.length == 2){
+        if(firstEmoji == imgs[num]){
 
-            if(selected[0] == selected[1]){
+            pairs++;
+            document.getElementById("pr").innerHTML =
+            pairs;
 
-                pairs++;
-                document.getElementById("pr").innerHTML = pairs;
-
-                document.getElementById("msg").innerHTML =
-                "Nice Match!";
-
-            }
-            else{
-
-                document.getElementById("msg").innerHTML =
-                "Not Match!";
-
-            }
-
-            selected = [];
+            document.getElementById("msg").innerHTML =
+            "Nice Match!";
 
         }
+        else{
 
-    });
+            document.getElementById("msg").innerHTML =
+            "Not Match!";
+        }
 
-});
+        first = "";
+        firstEmoji = "";
+    }
+
+}
